@@ -1,0 +1,103 @@
+import {
+	BookTextIcon,
+	CalendarCheckIcon,
+	CalendarDaysIcon,
+	FileBadge2Icon,
+	GraduationCapIcon,
+	LayoutDashboardIcon,
+	MessageCircleMoreIcon,
+	NewspaperIcon,
+	NotebookPenIcon,
+	RssIcon,
+	SchoolIcon,
+	ScrollTextIcon,
+	Users,
+	UsersRoundIcon,
+} from "lucide-react";
+
+export const menuItems = [
+	{
+		icon: LayoutDashboardIcon,
+		label: "Home",
+		href: "/",
+		visible: ["admin", "teacher", "student", "parent"],
+	},
+	{
+		icon: GraduationCapIcon,
+		label: "Teachers",
+		href: "/list/teachers",
+		visible: ["admin", "teacher"],
+	},
+	{
+		icon: UsersRoundIcon,
+		label: "Students",
+		href: "/list/students",
+		visible: ["admin", "teacher"],
+	},
+	{
+		icon: Users,
+		label: "Parents",
+		href: "/list/parents",
+		visible: ["admin", "teacher"],
+	},
+	{
+		icon: BookTextIcon,
+		label: "Subjects",
+		href: "/list/subjects",
+		visible: ["admin"],
+	},
+	{
+		icon: SchoolIcon,
+		label: "Classes",
+		href: "/list/classes",
+		visible: ["admin", "teacher"],
+	},
+	{
+		icon: ScrollTextIcon,
+		label: "Lessons",
+		href: "/list/lessons",
+		visible: ["admin", "teacher"],
+	},
+	{
+		icon: NotebookPenIcon,
+		label: "Exams",
+		href: "/list/exams",
+		visible: ["admin", "teacher", "student", "parent"],
+	},
+	{
+		icon: NewspaperIcon,
+		label: "Assignments",
+		href: "/list/assignments",
+		visible: ["admin", "teacher", "student", "parent"],
+	},
+	{
+		icon: FileBadge2Icon,
+		label: "Results",
+		href: "/list/results",
+		visible: ["admin", "teacher", "student", "parent"],
+	},
+	{
+		icon: CalendarCheckIcon,
+		label: "Attendance",
+		href: "/list/attendance",
+		visible: ["admin", "teacher", "student", "parent"],
+	},
+	{
+		icon: CalendarDaysIcon,
+		label: "Events",
+		href: "/list/events",
+		visible: ["admin", "teacher", "student", "parent"],
+	},
+	{
+		icon: MessageCircleMoreIcon,
+		label: "Messages",
+		href: "/list/messages",
+		visible: ["admin", "teacher", "student", "parent"],
+	},
+	{
+		icon: RssIcon,
+		label: "Announcements",
+		href: "/list/announcements",
+		visible: ["admin", "teacher", "student", "parent"],
+	},
+];
