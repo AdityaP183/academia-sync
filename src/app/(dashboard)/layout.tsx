@@ -18,7 +18,7 @@ export default async function AdminLayout({
 						<CardHeader className="h-16 px-3 py-3 border-b md:px-5 border-border">
 							<Navbar />
 						</CardHeader>
-						<CardContent className="h-[calc(100%-4rem)] w-full overflow-hidden overflow-y-auto py-0">
+						<CardContent className="h-[calc(100%-4rem)] w-full overflow-hidden overflow-y-auto p-0">
 							{children}
 						</CardContent>
 					</Card>

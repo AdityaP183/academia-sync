@@ -26,11 +26,11 @@ export default function ToggleSidebar() {
 				<div className="flex items-center gap-2 p-1">
 					<p>Toggle Sidebar</p>
 					<h4>
-						<kbd className="p-1 text-xs bg-gray-600 rounded-md">
+						<kbd className="p-1 text-xs bg-primary rounded-md">
 							Ctrl
 						</kbd>{" "}
 						+{" "}
-						<kbd className="px-2 py-1 text-xs bg-gray-600 rounded-md">
+						<kbd className="px-2 py-1 text-xs bg-primary rounded-md">
 							B
 						</kbd>
 					</h4>
