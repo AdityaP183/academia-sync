@@ -9,67 +9,215 @@ generator client {
 }
 
 datasource db {
-    provider = "mongodb"
+    provider = "mysql"
     url      = env("DATABASE_URL")
 }
 
-model User {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    clerkId   String?
-    firstName String
-    lastName  String
-    username  String?
-    avatar    String?
-    email     String?  @unique
-    phone     String?
-    address   Address?
-    gender    Gender?  @default(MALE)
-
-    // Roles - Relation fields
-    adminId String? @db.ObjectId
+model Admin {
+    id    String @id @default(cuid())
+    email String @unique
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
 
-model Address {
-    id      String @id @default(auto()) @map("_id") @db.ObjectId
-    street  String
-    city    String
-    country String
-    userId  String @unique @db.ObjectId
+model Student {
+    id        String   @id @default(cuid())
+    email     String   @unique
+    firstName String
+    lastName  String
+    gender    Gender
+    phone     String   @unique
+    avatar    String?
+    bloodType String
+    dob       DateTime
 
-    // Relations
-    user User @relation(fields: [userId], references: [id])
-}
+    addressId   String
+    address     Address      @relation(fields: [addressId], references: [id])
+    parentId    String
+    parent      Parent       @relation(fields: [parentId], references: [id])
+    classId     Int
+    class       Class        @relation(fields: [classId], references: [id])
+    gradeId     Int
+    grade       Grade        @relation(fields: [gradeId], references: [id])
+    result      Result[]
+    attendances Attendance[]
 
-model Admin {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
-    // Relation
-    userId String @unique @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Teacher {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-}
+    id        String   @id @default(cuid())
+    email     String   @unique
+    firstName String
+    lastName  String
+    gender    Gender
+    avatar    String?
+    phone     String   @unique
+    dob       DateTime
 
-model Student {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
+    addressId String
+    address   Address   @relation(fields: [addressId], references: [id])
+    subjects  Subject[]
+    lessons   Lesson[]
+    classes   Class[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Parent {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
+    id        String  @id @default(cuid())
+    email     String  @unique
+    firstName String
+    lastName  String
+    gender    Gender
+    avatar    String?
+    phone     String  @unique
+
+    addressId String
+    address   Address   @relation(fields: [addressId], references: [id])
+    students  Student[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
-enum DaysOfWeek {
+model Grade {
+    id    Int @id @default(autoincrement())
+    level Int @unique
+
+    students Student[]
+    classes  Class[]
+}
+
+model Class {
+    id       Int    @id @default(autoincrement())
+    name     String @unique
+    capacity Int
+
+    supervisorId String?
+    supervisor   Teacher?       @relation(fields: [supervisorId], references: [id])
+    gradeId      Int
+    grade        Grade          @relation(fields: [gradeId], references: [id])
+    lessons      Lesson[]
+    students     Student[]
+    event        Event[]
+    announcement Announcement[]
+}
+
+model Subject {
+    id   Int    @id @default(autoincrement())
+    name String
+
+    teachers Teacher[]
+    lessons  Lesson[]
+}
+
+model Lesson {
+    id        Int       @id @default(autoincrement())
+    name      String
+    day       DayofWeek
+    startTime DateTime
+    endTime   DateTime
+
+    subjectId   Int
+    subject     Subject      @relation(fields: [subjectId], references: [id])
+    classId     Int
+    class       Class        @relation(fields: [classId], references: [id])
+    teacherId   String
+    teacher     Teacher      @relation(fields: [teacherId], references: [id])
+    exams       Exam[]
+    assignments Assignment[]
+    attendances Attendance[]
+}
+
+model Exam {
+    id        Int      @id @default(autoincrement())
+    title     String
+    startTime DateTime
+    endTime   DateTime
+
+    lessonId Int
+    lesson   Lesson   @relation(fields: [lessonId], references: [id])
+    results  Result[]
+}
+
+model Assignment {
+    id        Int      @id @default(autoincrement())
+    title     String
+    startDate DateTime
+    dueDate   DateTime
+
+    lessonId Int
+    lesson   Lesson   @relation(fields: [lessonId], references: [id])
+    results  Result[]
+}
+
+model Result {
+    id    Int @id @default(autoincrement())
+    score Int
+
+    studentId    String
+    student      Student     @relation(fields: [studentId], references: [id])
+    examId       Int?
+    exam         Exam?       @relation(fields: [examId], references: [id])
+    assignmentId Int?
+    assignment   Assignment? @relation(fields: [assignmentId], references: [id])
+}
+
+model Attendance {
+    id      Int      @id @default(autoincrement())
+    date    DateTime
+    present Boolean
+
+    studentId String
+    student   Student @relation(fields: [studentId], references: [id])
+    lessonId  Int
+    lesson    Lesson  @relation(fields: [lessonId], references: [id])
+}
+
+model Event {
+    id          Int      @id @default(autoincrement())
+    title       String
+    description String
+    startTime   DateTime
+    endTime     DateTime
+
+    classId Int?
+    class   Class? @relation(fields: [classId], references: [id])
+}
+
+model Announcement {
+    id          Int      @id @default(autoincrement())
+    title       String
+    description String
+    date        DateTime
+
+    classId Int?
+    class   Class? @relation(fields: [classId], references: [id])
+}
+
+model Address {
+    id      String @id @default(cuid())
+    street  String
+    city    String
+    state   String
+    country String
+    zipcode String
+
+    student Student[]
+    teacher Teacher[]
+    parent  Parent[]
+}
+
+enum DayofWeek {
     MONDAY
     TUESDAY
     WEDNESDAY
     THURSDAY
     FRIDAY
-    SATURDAY
-    SUNDAY
 }
 
 enum Gender {

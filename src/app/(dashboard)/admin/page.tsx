@@ -1,18 +1,18 @@
 import AnnouncementsList from "@/components/app/dashboard/announcements-list";
 import AttendanceData from "@/components/app/dashboard/attendance-data";
 import EventCalendar from "@/components/app/dashboard/event-calendar";
-import EventList from "@/components/app/dashboard/event-list";
 import FinanceChart from "@/components/app/dashboard/finance-chart";
 import OverviewBox from "@/components/app/dashboard/overview-box";
 import UserDistribution from "@/components/app/dashboard/user-distribution";
-import { parentsData, studentsData, teachersData } from "@/lib/data";
+import prisma from "@/lib/prisma";
 
-export default function AdminPage() {
-	const totalUsers = {
-		totalStudents: studentsData.length,
-		totalTeachers: teachersData.length,
-		totalParents: parentsData.length,
-	};
+export default async function AdminPage() {
+	const [totalStudents, totalTeachers, totalParents] =
+		await prisma.$transaction([
+			prisma.student.count(),
+			prisma.teacher.count(),
+			prisma.parent.count(),
+		]);
 
 	return (
 		<div className="flex flex-col lg:flex-row h-full p-2 gap-3">
@@ -21,17 +21,17 @@ export default function AdminPage() {
 				<div className="grid grid-cols-3 gap-4 col-span-3">
 					<OverviewBox
 						type="student"
-						count={totalUsers.totalStudents}
+						count={totalStudents}
 						className="col-span-1"
 					/>
 					<OverviewBox
 						type="teacher"
-						count={totalUsers.totalTeachers}
+						count={totalTeachers}
 						className="col-span-1"
 					/>
 					<OverviewBox
 						type="parent"
-						count={totalUsers.totalParents}
+						count={totalParents}
 						className="col-span-1"
 					/>
 				</div>
@@ -56,9 +56,6 @@ export default function AdminPage() {
 			<div className="flex-1">
 				{/* Calendar */}
 				<EventCalendar />
-
-				{/* Events List */}
-				<EventList />
 
 				{/* Announcements */}
 				<AnnouncementsList />

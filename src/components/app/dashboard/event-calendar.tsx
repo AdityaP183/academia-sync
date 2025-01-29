@@ -1,9 +1,9 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import "./calendar.css";
 
 type ValuePiece = Date | null;
 
@@ -34,8 +34,27 @@ export default function EventCalendar() {
 	const [value, onChange] = useState<Value>(new Date());
 
 	return (
-		<Card className="overflow-hidden p-1">
-			<Calendar value={value} onChange={onChange} />
-		</Card>
+		<div>
+			<Card className="overflow-hidden p-1 bg-secondary">
+				<Calendar value={value} onChange={onChange} />
+			</Card>
+
+			<div className="flex flex-col gap-3 mt-4">
+				<h1 className="text-xl font-semibold">Events</h1>
+				{events.map((event) => (
+					<Card key={event.id}>
+						<CardHeader className="p-2 flex flex-row items-center justify-between">
+							<CardTitle>{event.title}</CardTitle>
+							<span className="text-sm text-muted-foreground">
+								{event.time}
+							</span>
+						</CardHeader>
+						<CardContent className="p-2 font-light">
+							{event.description}
+						</CardContent>
+					</Card>
+				))}
+			</div>
+		</div>
 	);
 }

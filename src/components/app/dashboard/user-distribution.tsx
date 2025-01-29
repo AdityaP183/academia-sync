@@ -20,11 +20,6 @@ export default function UserDistribution() {
 	const totalVisitors = chartData[0].boys + chartData[0].girls;
 	const chartConfig = getChartConfig(["Boys", "Girls"]);
 
-	// {
-	//     boys: { label: 'Boys', color: 'hsl(var(--chart-1))' },
-	//     girls: { label: 'Girls', color: 'hsl(var(--chart-2))' }
-	//   }
-
 	return (
 		<Card className="h-full">
 			<CardHeader>

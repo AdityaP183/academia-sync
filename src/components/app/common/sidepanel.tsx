@@ -9,9 +9,12 @@ import {
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import NavMenu from "./nav-menu";
+import { currentUser } from "@clerk/nextjs/server";
+import { RoleType } from "@/lib/types/component.types";
 
-export default function SidePanel() {
-	const role = "admin";
+export default async function SidePanel() {
+	const user = await currentUser();
+	const role = user?.publicMetadata?.role as RoleType;
 
 	return (
 		<Sidebar

@@ -11,8 +11,10 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function NavMenu({ role }: { role: RoleType }) {
+export default function NavMenu({ role }: { role?: RoleType }) {
 	const pathname = usePathname();
+
+	if (!role) return null;
 
 	return (
 		<SidebarMenu className="group-data-[collapsible=icon]:items-center">
